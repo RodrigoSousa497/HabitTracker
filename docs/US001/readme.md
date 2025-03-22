@@ -1,4 +1,4 @@
-# US01 - Create a Habit
+# US001 - Create a Habit
 
 ---
 

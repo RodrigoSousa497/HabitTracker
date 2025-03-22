@@ -1,6 +1,6 @@
 # Global Artifacts Folder
 
-This folder contains all the global artifacts for your project, split by each implementation phase.
+This folder contains all the global artifacts of the project, split by each implementation phase.
 
 [Glossary](01.requirements-engineering/glossary.md)
 
@@ -9,5 +9,3 @@ This folder contains all the global artifacts for your project, split by each im
 [Use Case Diagram](01.requirements-engineering/use-case-diagram.md)
 
 [Analysis](02.analysis/analysis.md)
-
-[Design](03.design/Readme.md)
