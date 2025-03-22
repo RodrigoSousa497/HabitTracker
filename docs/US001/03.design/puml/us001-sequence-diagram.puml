@@ -1,0 +1,115 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "User"
+participant "createHabitView:\nCreateHabitView" as View
+participant "createHabitViewModel:\nCreateHabitViewModel" as ViewModel
+participant "habitCategoryRepository:\nHabitCategoryRepository" as HabitCategoryRepository
+participant "habitTrackerDatabase:\nHabitTrackerDatabase" as Database
+participant "HabitCategoryDAO" as HabitCategoryDAO
+participant "habitRepository:\nHabitRepository" as HabitRepository
+participant "HabitDAO" as HabitDAO
+participant "habit\n:Habit" as Habit
+
+activate User
+
+    User -> View : asks to create a new habit
+    activate View
+
+        View -> ViewModel** : create
+
+        View -> ViewModel : listHabitCategories()
+            activate ViewModel
+
+                ViewModel -> HabitCategoryRepository** : create
+
+                ViewModel -> HabitCategoryRepository : listHabitCategories()
+                activate HabitCategoryRepository
+
+                    HabitCategoryRepository -> Database: habitCategoryDAO()
+                    activate Database
+
+                        Database --> HabitCategoryRepository: habitCategoryDAO
+                     deactivate Database
+
+                    HabitCategoryRepository -> HabitCategoryDAO: listHabitCategories()
+                    activate HabitCategoryDAO
+
+                        HabitCategoryDAO --> HabitCategoryRepository: habitCategoryList
+                    deactivate HabitCategoryDAO
+
+                    HabitCategoryRepository --> ViewModel: habitCategoryList
+                deactivate HabitCategoryRepository
+
+                ViewModel --> View : habitCategoryList
+            deactivate ViewModel
+
+            View --> User : display habit category list\n and asks to select one
+        deactivate View
+
+    User -> View : selects a task category
+    activate View
+
+        View --> User : requests data
+    deactivate View
+
+    User -> View : types requested data
+    activate View
+
+        View -> ViewModel : addNewHabit()
+        activate ViewModel
+
+            ViewModel -> ViewModel: validateData()
+            activate ViewModel
+
+                ViewModel --> ViewModel
+            deactivate ViewModel
+
+            ViewModel -> ViewModel : getHabitCategoryById(habitCategoryId)
+            activate ViewModel
+
+                ViewModel -> HabitCategoryRepository : findHabitCategoryById()
+                activate HabitCategoryRepository
+
+                    HabitCategoryRepository -> Database: habitCategoryDAO()
+                    activate Database
+
+                        Database --> HabitCategoryRepository: habitCategoryDAO
+                     deactivate Database
+
+                    HabitCategoryRepository -> HabitCategoryDAO: findHabitCategoryById()
+                    activate HabitCategoryDAO
+
+                        HabitCategoryDAO --> HabitCategoryRepository: habitCategory
+                    deactivate HabitCategoryDAO
+
+                    HabitCategoryRepository --> ViewModel: habitCategory
+                deactivate HabitCategoryRepository
+
+                ViewModel --> ViewModel: habitCategory
+            deactivate ViewModel
+
+            ViewModel -> HabitRepository** : create
+            ViewModel -> HabitRepository: addNewHabit()
+            activate HabitRepository
+                HabitRepository -> Habit**: create(...)
+                HabitRepository -> HabitDAO: addHabit (habit)
+                activate HabitDAO
+
+                    HabitDAO --> HabitRepository
+                deactivate HabitDAO
+
+                HabitRepository --> ViewModel: habit
+            deactivate HabitRepository
+
+        ViewModel --> View: habitName
+    deactivate ViewModel
+
+    View --> User: displays operation success
+deactivate User
+
+@enduml
