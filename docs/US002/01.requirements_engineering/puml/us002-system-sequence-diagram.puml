@@ -1,0 +1,27 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+title System Sequence Diagram (SSD) - Alternative One
+
+autonumber
+
+actor "User" as User
+participant ":System" as System
+
+activate User
+
+    User -> System : asks to delete a habit
+    activate System
+
+        System --> User : shows habits list and asks to select one
+    deactivate System
+
+    User -> System : selects a habit
+    activate System
+
+        System --> User : displays operation success
+    deactivate System
+
+@enduml

@@ -1,0 +1,60 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+
+class DeleteHabitView {
+}
+
+class DeleteHabitViewModel {
+    + deleteHabit()
+    - getHabitById()
+    + listAllHabits()
+}
+
+class Habit {
+    - id
+    - title
+    - description
+    - measurement
+    - unitOfMeasurement
+    - startDate
+    - endDate
+    - frequency
+    - priority
+    - categoryId
+}
+
+class HabitDAO {
+    + deleteHabit()
+}
+
+
+class HabitRepository {
+    + deleteHabit()
+}
+
+class Database {
+    + habitDAO()
+}
+
+
+DeleteHabitView -> DeleteHabitView : instance
+DeleteHabitViewModel -> DeleteHabitViewModel : instance
+HabitRepository -> HabitRepository : instance
+Database -> Database : instance
+
+
+DeleteHabitView --> DeleteHabitViewModel : creates
+DeleteHabitViewModel --> HabitRepository : habitRepository
+
+HabitRepository --> Habit : creates
+HabitRepository --> HabitDAO
+
+Database --> HabitDAO
+
+
+
+@enduml

@@ -1,0 +1,73 @@
+@startuml
+skinparam packageStyle rectangle
+skinparam shadowing false
+skinparam linetype polyline
+skinparam classAttributeIconSize 0
+
+
+class CreateHabitView {
+}
+
+class CreateHabitViewModel {
+    + addNewHabit()
+    + validateData()
+    + getHabitById()
+    + listHabitCategories()
+}
+
+class Habit {
+    - id
+    - title
+    - description
+    - measurement
+    - unitOfMeasurement
+    - startDate
+    - endDate
+    - frequency
+    - priority
+    - categoryId
+}
+
+class HabitDAO {
+    + addHabit()
+}
+
+class HabitCategoryDAO {
+    + listHabitCategories()
+}
+
+class HabitCategoryRepository {
+    + listHabitCategories()
+    + findHabitCategoryById()
+}
+
+class HabitRepository {
+    + addNewHabit()
+}
+
+class Database {
+    + habitCategoryDAO()
+    + habitDAO()
+}
+
+
+CreateHabitView -> CreateHabitView : instance
+CreateHabitViewModel -> CreateHabitViewModel : instance
+HabitRepository -> HabitRepository : instance
+Database -> Database : instance
+
+
+CreateHabitView --> CreateHabitViewModel : creates
+CreateHabitViewModel --> HabitRepository : habitRepository
+CreateHabitViewModel --> HabitCategoryRepository : habitCategoryRepository
+
+HabitRepository --> Habit : creates
+HabitRepository --> HabitDAO
+HabitCategoryRepository --> HabitCategoryDAO
+
+Database --> HabitDAO
+Database --> HabitCategoryDAO
+
+
+
+@enduml

@@ -1,0 +1,99 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "User"
+participant "deleteHabitView:\nDeleteHabitView" as View
+participant "deleteHabitViewModel:\nDeleteHabitViewModel" as ViewModel
+participant "habitRepository:\nHabitRepository" as HabitRepository
+participant "habitTrackerDatabase:\nHabitTrackerDatabase" as Database
+participant "HabitDAO" as HabitDAO
+
+activate User
+
+    User -> View : asks to delete a habit
+    activate View
+
+        View -> ViewModel** : create
+
+        View -> ViewModel : listAllHabits()
+            activate ViewModel
+
+                ViewModel -> HabitRepository** : create
+
+                ViewModel -> HabitRepository : listAllHabits()
+                activate HabitRepository
+
+                    HabitRepository -> Database: habitDAO()
+                    activate Database
+
+                        Database --> HabitRepository: habitDAO
+                     deactivate Database
+
+                    HabitRepository -> HabitDAO: listAllHabits()
+                    activate HabitDAO
+
+                        HabitDAO --> HabitRepository: habitList
+                    deactivate HabitDAO
+
+                    HabitRepository --> ViewModel: habitList
+                deactivate HabitRepository
+
+                ViewModel --> View : habitList
+            deactivate ViewModel
+
+            View --> User : display habit list\n and asks to select one
+        deactivate View
+
+    User -> View : selects a habit
+    activate View
+
+        View -> ViewModel : deleteHabit()
+        activate ViewModel
+
+            ViewModel -> ViewModel : getHabitById(habitId)
+            activate ViewModel
+
+                ViewModel -> HabitRepository : findHabitById()
+                activate HabitRepository
+
+                    HabitRepository -> Database: habitDAO()
+                    activate Database
+
+                        Database --> HabitRepository: habitDAO
+                     deactivate Database
+
+                    HabitRepository -> HabitDAO: findHabitById()
+                    activate HabitDAO
+
+                        HabitDAO --> HabitRepository: habit
+                    deactivate HabitDAO
+
+                    HabitRepository --> ViewModel: habit
+                deactivate HabitRepository
+
+                ViewModel --> ViewModel: habit
+            deactivate ViewModel
+
+            ViewModel -> HabitRepository: deleteHabit(habit)
+            activate HabitRepository
+
+                HabitRepository -> HabitDAO: deleteHabit (habit)
+                activate HabitDAO
+
+                    HabitDAO --> HabitRepository
+                deactivate HabitDAO
+
+                HabitRepository --> ViewModel
+            deactivate HabitRepository
+
+        ViewModel --> View: habitName
+    deactivate ViewModel
+
+    View --> User: displays operation success
+deactivate User
+
+@enduml

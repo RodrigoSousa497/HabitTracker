@@ -51,7 +51,7 @@ activate User
             View --> User : display habit category list\n and asks to select one
         deactivate View
 
-    User -> View : selects a task category
+    User -> View : selects a habit category
     activate View
 
         View --> User : requests data
