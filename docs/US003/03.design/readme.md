@@ -1,4 +1,4 @@
-# US001 - Create a Habit
+# US003 - Edit a Habit
 
 ## 3. Design - User Story Realization
 
@@ -10,9 +10,9 @@ _**Note that SSD - Alternative One is adopted.**_
 
 This diagram shows the full sequence of interactions between the classes involved in the realization of this user story.
 
-![Sequence Diagram - Full](svg/us001-sequence-diagram.svg)
+![Sequence Diagram - Full](svg/us003-sequence-diagram.svg)
 
 
 ## 3.2. Class Diagram (CD)
 
-![Class Diagram](svg/us001-class-diagram.svg)
+![Class Diagram](svg/us003-class-diagram.svg)

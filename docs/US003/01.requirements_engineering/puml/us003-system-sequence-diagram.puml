@@ -12,19 +12,19 @@ participant ":System" as System
 
 activate User
 
-    User -> System : asks to create a new habit
+    User -> System : asks to edit a habit
+    activate System
+
+        System --> User : shows habit category list and asks to select one
+    deactivate System
+
+        User -> System : selects a habit category
     activate System
 
         System --> User : requests data (title, description, measurement, priority, unit of measurement, start date, end date, frequency)
     deactivate System
 
     User -> System : types requested data
-    activate System
-
-        System --> User : shows task category list and asks to select one
-    deactivate System
-
-    User -> System : selects a task category
     activate System
 
         System --> User : displays operation success

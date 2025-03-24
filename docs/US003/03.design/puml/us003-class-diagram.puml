@@ -5,14 +5,16 @@ skinparam linetype polyline
 skinparam classAttributeIconSize 0
 
 
-class CreateHabitView {
+class EditHabitView {
 }
 
-class CreateHabitViewModel {
-    + addNewHabit()
-    + validateData()
-    + getHabitById()
+class EditHabitViewModel {
+    + listHabit()
     + listHabitCategories()
+    - getHabitById()
+    + editHabit()
+    + validateData()
+    - getHabitCategoryById()
 }
 
 class Habit {
@@ -29,11 +31,14 @@ class Habit {
 }
 
 class HabitDAO {
-    + addHabit()
+    + listHabits()
+    + updateHabit()
+    + findHabitById()
 }
 
 class HabitCategoryDAO {
     + listHabitCategories()
+    + findHabitCategoryById()
 }
 
 class HabitCategoryRepository {
@@ -42,7 +47,9 @@ class HabitCategoryRepository {
 }
 
 class HabitRepository {
-    + addNewHabit()
+    + listHabits()
+    + findHabitById()
+    + updateHabit()
 }
 
 class Database {
@@ -51,15 +58,15 @@ class Database {
 }
 
 
-CreateHabitView -> CreateHabitView : instance
-CreateHabitViewModel -> CreateHabitViewModel : instance
+EditHabitView -> EditHabitView : instance
+EditHabitViewModel -> EditHabitViewModel : instance
 HabitRepository -> HabitRepository : instance
 Database -> Database : instance
 
 
-CreateHabitView --> CreateHabitViewModel : creates
-CreateHabitViewModel --> HabitRepository : habitRepository
-CreateHabitViewModel --> HabitCategoryRepository : habitCategoryRepository
+EditHabitView --> EditHabitViewModel : creates
+EditHabitViewModel --> HabitRepository : habitRepository
+EditHabitViewModel --> HabitCategoryRepository : habitCategoryRepository
 
 HabitRepository --> Habit : creates
 HabitRepository --> HabitDAO

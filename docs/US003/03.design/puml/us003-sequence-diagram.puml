@@ -1,0 +1,165 @@
+@startuml
+skinparam monochrome true
+skinparam packageStyle rectangle
+skinparam shadowing false
+
+autonumber
+
+actor "User"
+participant "editHabitView:\nEditHabitView" as View
+participant "editHabitViewModel:\nEditHabitViewModel" as ViewModel
+participant "habitRepository:\nHabitRepository" as HabitRepository
+participant "habitTrackerDatabase:\nHabitTrackerDatabase" as Database
+participant "HabitDAO" as HabitDAO
+participant "habitCategoryRepository:\nHabitCategoryRepository" as HabitCategoryRepository
+participant "HabitCategoryDAO" as HabitCategoryDAO
+participant "habit\n:Habit" as Habit
+
+activate User
+
+    User -> View : asks to edit a habit
+    activate View
+
+        View -> ViewModel** : create
+
+        View -> ViewModel : listHabits()
+            activate ViewModel
+
+                ViewModel -> HabitRepository** : create
+
+                ViewModel -> HabitRepository : listHabits()
+                activate HabitRepository
+
+                    HabitRepository -> Database: habitDAO()
+                    activate Database
+
+                        Database --> HabitRepository: habitDAO
+                     deactivate Database
+
+                    HabitRepository -> HabitDAO: listHabits()
+                    activate HabitDAO
+
+                        HabitDAO --> HabitRepository: habitList
+                    deactivate HabitDAO
+
+                    HabitRepository --> ViewModel: habitList
+                deactivate HabitRepository
+
+                ViewModel --> View : habitList
+            deactivate ViewModel
+
+            View --> User : display habits list\n and asks to select one
+        deactivate View
+
+    User -> View : selects a habit
+    activate View
+
+        View -> ViewModel : listHabitCategories()
+        activate ViewModel
+
+            ViewModel -> ViewModel : getHabitById(habitId)
+            activate ViewModel
+
+                ViewModel -> HabitRepository : findHabitById()
+                activate HabitRepository
+
+                    HabitRepository -> Database: habitDAO()
+                    activate Database
+
+                        Database --> HabitRepository: HabitDAO
+                     deactivate Database
+
+                    HabitRepository -> HabitDAO: findHabitById()
+                    activate HabitDAO
+
+                        HabitDAO --> HabitRepository: habit
+                    deactivate HabitDAO
+
+                    HabitRepository --> ViewModel: habit
+                deactivate HabitRepository
+
+                ViewModel --> ViewModel: habit
+            deactivate ViewModel
+
+            ViewModel -> HabitCategoryRepository** : create
+
+            ViewModel -> HabitCategoryRepository : listHabitCategories()
+            activate HabitCategoryRepository
+
+                HabitCategoryRepository -> Database: habitCategoryDAO()
+                activate Database
+
+                    Database --> HabitCategoryRepository: habitCategoryDAO
+                 deactivate Database
+
+                HabitCategoryRepository -> HabitCategoryDAO: listHabitCategories()
+                activate HabitCategoryDAO
+
+                    HabitCategoryDAO --> HabitCategoryRepository: habitCategoryList
+                deactivate HabitCategoryDAO
+
+                HabitCategoryRepository --> ViewModel: habitCategoryList
+            deactivate HabitCategoryRepository
+
+            ViewModel --> View : habitCategoryList
+        deactivate ViewModel
+
+        View --> User : requests new data
+    deactivate View
+
+
+    User -> View : types requested data
+    activate View
+
+        View -> ViewModel : editHabit()
+        activate ViewModel
+
+            ViewModel -> ViewModel: validateData()
+            activate ViewModel
+
+                ViewModel --> ViewModel
+            deactivate ViewModel
+
+            ViewModel -> ViewModel : getHabitCategoryById(habitCategoryId)
+            activate ViewModel
+
+                ViewModel -> HabitCategoryRepository : findHabitCategoryById()
+                activate HabitCategoryRepository
+
+                    HabitCategoryRepository -> Database: habitCategoryDAO()
+                    activate Database
+
+                        Database --> HabitCategoryRepository: habitCategoryDAO
+                     deactivate Database
+
+                    HabitCategoryRepository -> HabitCategoryDAO: findHabitCategoryById()
+                    activate HabitCategoryDAO
+
+                        HabitCategoryDAO --> HabitCategoryRepository: habitCategory
+                    deactivate HabitCategoryDAO
+
+                    HabitCategoryRepository --> ViewModel: habitCategory
+                deactivate HabitCategoryRepository
+
+                ViewModel --> ViewModel: habitCategory
+            deactivate ViewModel
+
+            ViewModel -> HabitRepository: updateHabit()
+            activate HabitRepository
+                HabitRepository -> Habit**: create(...)
+                HabitRepository -> HabitDAO: updateHabit (habit)
+                activate HabitDAO
+
+                    HabitDAO --> HabitRepository
+                deactivate HabitDAO
+
+                HabitRepository --> ViewModel: habit
+            deactivate HabitRepository
+
+        ViewModel --> View: habitName
+    deactivate ViewModel
+
+    View --> User: displays operation success
+deactivate User
+
+@enduml

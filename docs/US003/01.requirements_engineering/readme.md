@@ -1,20 +1,20 @@
-# US001 - Create a Habit
+# US003 - Edit a Habit
 
 
 ## 1. Requirements Engineering
 
 ### 1.1. User Story Description
 
-As a user, I want to create new habits so that I can track my progress and improve my routine.
+As a user, I want to edit exiting habits.
 
 ### 1.3. Acceptance Criteria
 
-* **AC1:** All required fields must be filled in.
+* **AC1:** 
 
 
 ### 1.4. Found out Dependencies
 
-* There is a dependency on "US005 - Create a database" as there must be a database to save the habit
+* There is a dependency on "US001 - Create a habit" as there must be a habit to edit it
 
 ### 1.5 Input and Output Data
 
@@ -38,3 +38,6 @@ As a user, I want to create new habits so that I can track my progress and impro
 **Output Data:**
 
 * (In)Success of the operation
+
+### 1.6 System Sequence Diagram
+![System Sequence Diagram](svg/us003-system-sequence-diagram.svg)
